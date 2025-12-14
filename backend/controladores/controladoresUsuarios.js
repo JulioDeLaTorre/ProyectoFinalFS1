@@ -1,81 +1,88 @@
-const asyncHandler = require('express-async-handler');
+// controladores/usuarioControlador.js
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-const Usuario = require('../modelos/ModeloUsuarios');
+const asyncHandler = require('express-async-handler');
+const Usuario = require('../modelos/usuarioModelo');
 
-const registroUsuario =asyncHandler(async (req, res) => {
-    //res.json({ mensaje: 'Registro de usuario' });
-    const { nombre, email, password } = req.body;
+// Función para generar JWT (necesaria en login y registro)
+const generarToken = (id) => {
+    return jwt.sign({ id }, process.env.JTW_SECRETO, {
+        expiresIn: '30d'
+    });
+};
+
+// @desc    Registrar nuevo usuario
+// @route   POST /api/usuarios
+// @access  Public
+const registrarUsuario = asyncHandler(async (req, res) => {
+    const { nombre, email, password, rol } = req.body; // Recibe rol opcional
 
     if (!nombre || !email || !password) {
         res.status(400);
-        throw new Error('Por favor completa todos los campos');
+        throw new Error('Por favor incluye todos los campos');
     }
 
-    const usuarioExistente = await Usuario.findOne({ email });
-
-    if (usuarioExistente) {
+    const usuarioExiste = await Usuario.findOne({ email });
+    if (usuarioExiste) {
         res.status(400);
         throw new Error('El usuario ya existe');
     }
-    //res.json({ mensaje: 'Usuario registrado correctamente' });
-    const sal = await bcrypt.genSalt(10);
-    const PasswordEncriptado = await bcrypt.hash(password, sal);
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
     const usuario = await Usuario.create({
         nombre,
         email,
-        password: PasswordEncriptado,
+        password: hashedPassword,
+        rol: rol || 'usuario' // Asigna 'usuario' por defecto si no se especifica
     });
 
-    if (!usuario) {
-        res.status(400);
-        throw new Error('Datos de usuario no válidos');
-    } else {
+    if (usuario) {
         res.status(201).json({
             _id: usuario.id,
             nombre: usuario.nombre,
-            email: usuario.email, token: generarTokenJWT(usuario._id)   
+            email: usuario.email,
+            rol: usuario.rol, // Devuelve el rol
+            token: generarToken(usuario._id)
         });
+    } else {
+        res.status(400);
+        throw new Error('Datos de usuario inválidos');
     }
 });
 
-
-const loginUsuario =asyncHandler(async (req, res) => {
-    //res.json({ mensaje: 'Usuario Loggeado Correctamente' });
-
-    if (!req.body) {
-        res.status(400);
-        throw new Error('Por favor completa todos los campos');
-    }
-    
+// @desc    Autenticar un usuario
+// @route   POST /api/usuarios/login
+// @access  Public
+const loginUsuario = asyncHandler(async (req, res) => {
     const { email, password } = req.body;
 
     const usuario = await Usuario.findOne({ email });
 
     if (usuario && (await bcrypt.compare(password, usuario.password))) {
-       res.json({
-        _id: usuario.id,
-        nombre: usuario.nombre,
-        email: usuario.email, token: generarTokenJWT(usuario._id)
-       });
+        res.json({
+            _id: usuario.id,
+            nombre: usuario.nombre,
+            email: usuario.email,
+            rol: usuario.rol, // Devuelve el rol
+            token: generarToken(usuario._id)
+        });
     } else {
-        res.status(401);
-        throw new Error('Datos Inválidos');
-    } 
+        res.status(400);
+        throw new Error('Credenciales inválidas');
+    }
 });
 
-const obtenerUsuarioActual =asyncHandler(async (req, res) => {
-    //res.json({ mensaje: 'Datos del usuario actual' });
-    const { _id, nombre, email } = await Usuario.findById(req.usuario.id);
-    res.status(200).json({
-        id: _id,
-        nombre,
-        email
-    });
+// @desc    Obtener datos del usuario actual
+// @route   GET /api/usuarios/me
+// @access  Private
+const getDatosUsuario = asyncHandler(async (req, res) => {
+    res.status(200).json(req.usuario);
 });
 
-const generarTokenJWT = id => jwt.sign({ id }, process.env.JTW_SECRETO, {
-    expiresIn: '5d',
-});
-
-module.exports = { registroUsuario, loginUsuario, obtenerUsuarioActual};
+module.exports = {
+    registrarUsuario,
+    loginUsuario,
+    getDatosUsuario
+};

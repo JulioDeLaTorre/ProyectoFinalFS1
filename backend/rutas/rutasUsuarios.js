@@ -1,10 +1,16 @@
+// rutas/rutasUsuarios.js
 const express = require('express');
 const router = express.Router();
-const {registroUsuario, loginUsuario, obtenerUsuarioActual} = require('../controladores/controladoresUsuarios');
+const { 
+    registrarUsuario,
+    loginUsuario,
+    getDatosUsuario
+} = require('../controlador/controladoresUsuarios');
 const { proteger } = require('../middleware/authMiddleware');
 
-router.post('/', registroUsuario);
+router.post('/', registrarUsuario);
 router.post('/login', loginUsuario);
-router.get('/actual', proteger, obtenerUsuarioActual);
+// Ruta protegida para obtener el perfil del usuario autenticado
+router.get('/me', proteger, getDatosUsuario);
 
 module.exports = router;
