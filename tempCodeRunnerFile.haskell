@@ -1,0 +1,3 @@
+test :: String -> Bool
+test ('a':_:_:_) = True
+test _           = False

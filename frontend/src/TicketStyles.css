@@ -1,0 +1,276 @@
+:root {
+  --ts-bg: transparent; 
+  --ts-card: #ffffff;   
+  --ts-border: #334155; 
+  --ts-primary: #3b82f6;
+  --ts-primary-light: rgba(59, 130, 246, 0.1);
+  --ts-text-card: #0f172a; 
+  --ts-text-sec: #64748b;
+  --ts-text-header: #ffffff; 
+}
+
+.ts-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.ts-header {
+  margin-bottom: 2rem;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  padding-bottom: 20px;
+}
+
+.ts-title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--ts-text-header);
+  margin-bottom: 0.5rem;
+}
+
+.ts-meta {
+  color: #94a3b8;
+  font-size: 0.9rem;
+}
+
+/* --- GRID LAYOUTS --- */
+
+/* Grid Normal (Usuario): 2 Columnas Asimétricas */
+.ts-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+/* Grid Completo (Soporte): 1 Columna ancha */
+.ts-grid-full {
+  display: block;
+  width: 100%;
+}
+
+/* Grid de Tickets para Soporte (3 Columnas) */
+.ts-dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  width: 100%;
+}
+
+/* Lista Lateral para Usuario (Vertical) */
+.ts-sidebar-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+@media (min-width: 1024px) {
+  .ts-grid { grid-template-columns: 7fr 5fr; }
+}
+
+/* Tarjetas */
+.ts-card {
+  background: var(--ts-card);
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+  color: var(--ts-text-card);
+}
+
+.ts-card-interactive:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+  border-color: var(--ts-primary);
+  cursor: pointer;
+}
+
+.ts-card-header {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  color: var(--ts-text-card);
+  background: #f8fafc;
+}
+
+.ts-card-body { padding: 1.5rem; }
+
+.ts-textarea {
+  width: 100%;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 10px;
+  background: #ffffff;
+  color: #0f172a;
+  font-family: inherit;
+  outline: none;
+}
+
+/* Badges */
+.ts-badge {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.ts-badge.baja    { background: #d1fae5; color: #065f46; }
+.ts-badge.media   { background: #fef3c7; color: #92400e; }
+.ts-badge.alta    { background: #fee2e2; color: #991b1b; }
+.ts-badge.urgente { background: #ef4444; color: white; }
+
+.ts-badge.nuevo       { background: #e0f2fe; color: #0284c7; border: 1px solid #bae6fd; }
+.ts-badge.abierto     { background: #dcfce7; color: #15803d; border: 1px solid #86efac; }
+.ts-badge.en_revisión, .ts-badge.en_revision { background: #f3e8ff; color: #6b21a8; border: 1px solid #d8b4fe; }
+.ts-badge.cerrado     { background: #f1f5f9; color: #64748b; border: 1px solid #cbd5e1; }
+.ts-badge.in_progress { background: #dbeafe; color: #1e40af; }
+
+/* Chat */
+.ts-msg-header { display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 5px; color: #64748b;}
+.ts-msg-name { font-weight: 700; color: #0f172a; }
+.ts-msg-bubble { padding: 10px 15px; background: #f1f5f9; border-radius: 0 12px 12px 12px; color: #334155; }
+.is-support .ts-msg-bubble { background: #e0f2fe; color: #0c4a6e; }
+
+.ts-timeline { display: flex; flex-direction: column; gap: 15px; margin-top: 20px;}
+.ts-message { display: flex; gap: 15px; }
+.ts-avatar-col { display: flex; flex-direction: column; alignItems: center; width: 40px; }
+.ts-avatar { width: 32px; height: 32px; border-radius: 50%; }
+.ts-line-vertical { width: 2px; flex: 1; background: #e2e8f0; margin-top: 5px; }
+.ts-msg-content { flex: 1; }
+.ts-sidebar-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f1f5f9; font-size: 0.9rem; color: #334155; }
+.ts-action-btn { border: 1px solid var(--ts-primary); background: white; color: var(--ts-primary); padding: 10px; border-radius: 6px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;}
+.ts-action-btn:hover { background: var(--ts-primary); color: white; }
+.ts-input-footer { padding: 10px; background: #f8fafc; border-top: 1px solid #e2e8f0; display: flex; justify-content: flex-end;}
+
+
+/* Grid Completo (Soporte) */
+.ts-grid-full {
+  display: block;
+  width: 100%;
+}
+
+/* El Grid de 3 columnas para las tarjetas */
+.ts-dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  width: 100%;
+}
+
+/* La lista vertical para usuario normal */
+.ts-sidebar-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* CHAT SIMPLE IZQ / DER */
+
+.ts-chat-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.ts-msg-row {
+  display: flex;
+}
+
+.ts-msg-row.left {
+  justify-content: flex-start;
+}
+
+.ts-msg-row.right {
+  justify-content: flex-end;
+}
+
+.ts-msg-box {
+  max-width: 70%;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: #f1f5f9;
+  color: #334155;
+}
+
+.ts-msg-row.right .ts-msg-box {
+  background: #e0f2fe;
+  text-align: right;
+}
+
+.ts-msg-name {
+  font-weight: 700;
+  font-size: 0.8rem;
+  margin-bottom: 4px;
+}
+
+.ts-msg-text {
+  font-size: 0.95rem;
+}
+
+.ts-msg-date {
+  font-size: 0.7rem;
+  margin-top: 4px;
+  color: #94a3b8;
+}
+
+/* === INPUT BLOQUE === */
+
+.ts-input-card {
+  border-top: 1px solid #e2e8f0;
+}
+
+.ts-locked {
+  text-align: center;
+  color: #64748b;
+}
+
+/* === ACCIONES SOPORTE === */
+
+.ts-actions {
+  display: flex;
+  gap: 12px;
+  padding: 12px;
+}
+
+.ts-action-btn {
+  flex: 1;
+  border: 1px solid var(--ts-primary);
+  background: white;
+  color: var(--ts-primary);
+  padding: 10px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.ts-action-btn:hover {
+  transform: translateY(-1px);
+}
+
+.ts-action-btn.warning {
+  border-color: #f59e0b;
+  color: #d97706;
+}
+
+.ts-action-btn.warning:hover {
+  background: #fef3c7;
+}
+
+.ts-action-btn.danger {
+  border-color: #ef4444;
+  color: #dc2626;
+}
+
+.ts-action-btn.danger:hover {
+  background: #fee2e2;
+}
